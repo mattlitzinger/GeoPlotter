@@ -1,0 +1,204 @@
+// Flexbox grid system as laid out by Philip Walton
+// Link: https://philipwalton.github.io/solved-by-flexbox/demos/grids/
+
+$grid_gutter_size: 64px;
+$grid_gutter_size_small: 26px;
+$grid_gutter_size_large: 128px;
+
+$breakpoints: (
+  'xsmall' '(max-width: 599px)',
+  'small' '(min-width: 600px)',
+  'medium' '(min-width: 900px)',
+  'large' '(min-width: 1200px)',
+  'print' ''
+)!default;
+
+$xsmall_only: '(max-width: 599px)';
+$small_only: '(min-width: 600px) and (max-width: 899px)';
+$medium_only: '(min-width: 900px) and (max-width: 1199px)';
+$small_up: '(min-width: 600px)';
+$medium_up: '(min-width: 900px)'; 
+$large_up: '(min-width: 1200px)';
+$xlarge_up: '(min-width: 1600px)';
+
+/* ========================
+     Basic Grid Styles
+=========================*/
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -$grid_gutter_size;
+
+  &.small-gutters {
+    margin-left: -$grid_gutter_size_small;
+  }
+
+  &.large-gutters {
+    margin-left: -$grid_gutter_size_large;
+  }
+}
+
+.columns {
+  flex: 1;
+  padding-left: $grid_gutter_size;
+  box-sizing: border-box;
+  word-break: break-word;
+
+  // .box {
+  //   min-height: 120px;
+  //   background-color: $lighter_grey;
+  //   text-align: center;
+  //   text-transform: uppercase;
+  //   line-height: 120px;
+  //   color: $grey;
+  // }
+}
+
+.row.small-gutters .columns {
+  padding-left: $grid_gutter_size_small;
+}
+
+.row.large-gutters .columns {
+  padding-left: $grid_gutter_size_large;
+}
+
+/* ========================
+     Grid Style Modifiers
+=========================*/
+
+/* Vertical row alignment */
+.row {
+  // &.align-top {
+  //   align-items: flex-start;
+  // }
+  // &.align-bottom {
+  //   align-items: flex-end;
+  // }
+  &.align-center {
+    // align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ========================
+     Responsive Styles
+=========================*/
+
+@mixin grid-sizes($breakpoint_name) {
+
+  // Grid width classes
+  .#{$breakpoint_name}-12 {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+  .#{$breakpoint_name}-11 {
+    flex: 0 0 auto;
+    width: 91.6666%;
+  }
+  .#{$breakpoint_name}-10 {
+    flex: 0 0 auto;
+    width: 83.3333%;
+  }
+  .#{$breakpoint_name}-9 {
+    flex: 0 0 auto;
+    width: 75%;
+  }
+  .#{$breakpoint_name}-8 {
+    flex: 0 0 auto;
+    width: 66.6666%;
+  }
+  .#{$breakpoint_name}-7 {
+    flex: 0 0 auto;
+    width: 58.3333%;
+  }
+  .#{$breakpoint_name}-6 {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+  .#{$breakpoint_name}-5 {
+    flex: 0 0 auto;
+    width: 41.6666%;
+  }
+  .#{$breakpoint_name}-4 {
+    flex: 0 0 auto;
+    width: 33.3333%;
+  }
+  .#{$breakpoint_name}-3 {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+  .#{$breakpoint_name}-2 {
+    flex: 0 0 auto;
+    width: 16.6666%;
+  }
+  .#{$breakpoint_name}-1 {
+    flex: 0 0 auto;
+    width: 8.3333%;
+  }
+
+  // Grid offset classes
+  .#{$breakpoint_name}-offset-12 {
+    margin-left: 100%;
+  }
+  .#{$breakpoint_name}-offset-11 {
+    margin-left: 91.6666%;
+  }
+  .#{$breakpoint_name}-offset-10 {
+    margin-left: 83.3333%;
+  }
+  .#{$breakpoint_name}-offset-9 {
+    margin-left: 75%;
+  }
+  .#{$breakpoint_name}-offset-8 {
+    margin-left: 66.6666%;
+  }
+  .#{$breakpoint_name}-offset-7 {
+    margin-left: 58.3333%;
+  }
+  .#{$breakpoint_name}-offset-6 {
+    margin-left: 50%;
+  }
+  .#{$breakpoint_name}-offset-5 {
+    margin-left: 41.6666%;
+  }
+  .#{$breakpoint_name}-offset-4 {
+    margin-left: 33.3333%;
+  }
+  .#{$breakpoint_name}-offset-3 {
+    margin-left: 25%;
+  }
+  .#{$breakpoint_name}-offset-2 {
+    margin-left: 16.6666%;
+  }
+  .#{$breakpoint_name}-offset-1 {
+    margin-left: 8.3333%;
+  }
+
+  // Grid utility classes
+  .#{$breakpoint_name}-hide {
+    display: none !important;
+  }
+
+  .#{$breakpoint_name}-center {
+    justify-content: center;
+  }
+}
+
+@each $breakpoint in $breakpoints {
+  $breakpoint_name: nth($breakpoint, 1);
+  $breakpoint_width: nth($breakpoint, 2);
+  
+  /* #{$breakpoint_name} screens */
+  @if $breakpoint_name == 'print' {
+    @media print {
+      @include grid-sizes($breakpoint_name); 
+    }
+  } @else {
+    @media screen and #{$breakpoint_width} {
+      @include grid-sizes($breakpoint_name); 
+    }
+  }
+  
+}
+

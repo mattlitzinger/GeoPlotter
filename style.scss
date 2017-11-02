@@ -1,0 +1,27 @@
+/*!
+Theme Name: Matt Litzinger Music
+Theme URI: http://mattlitzingermusic.com/
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mattlitzingermusic
+*/
+
+// Colors
+
+$black: #000000;
+$grey: #505050;
+$white: rgba(255,255,255,0.92);
+
+$dark_blue: #312F3B;
+$medium_blue: #3E405E;
+$light_blue: #65677E;
+
+$orange: #FF6201;
+
+@import
+  'css/_reset',
+  'css/_grid',
+  'css/_base',
+  'css/_layout'
+;

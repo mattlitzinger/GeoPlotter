@@ -1,0 +1,105 @@
+.app-header {
+	padding: 126px 0 110px;
+	background-color: #888;
+	background-color: $medium_blue; /* For browsers that do not support gradients */
+  background: linear-gradient($medium_blue, $dark_blue);
+  text-align: center;
+  color: $white;
+
+  .inputfile {
+		width: 0.1px;
+		height: 0.1px;
+		opacity: 0;
+		overflow: hidden;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.inputfile:focus + label {
+		background-color: darken($orange, 6.5%);	
+	}
+
+	&.has-advanced-upload {
+	  outline: 2px dashed lighten($dark_blue, 12%);
+	  outline-offset: -10px;
+	}
+
+	&.is-dragover {
+	  background: lighten($dark_blue, 12%);
+	  outline: 2px dashed lighten($grey, 55%);
+	}
+}
+
+.app-alert-bar,
+.app-filter-bar {
+	display: none;
+	padding: 20px 24px;
+	background-color: $light_blue;
+	text-align: center;
+	color: $white;
+}
+
+#filter_options {
+	display: none;
+	text-align: center;
+
+	label {
+		margin-right: 12px;
+	}
+}
+
+.app-content {
+	padding: 48px 0;
+
+	@media screen and (max-width: 1000px) {
+		padding: 0 0 48px;
+
+		.wrap {
+			padding: 0;
+		}
+	}
+}
+
+.map-container {
+	height: 0;
+	padding-top: 56.25%;
+	background-color: lighten($grey, 55%);
+
+	#map {
+		display: none;
+	  height: 0;
+	  width: 100%;
+	  padding-top: 56.25%;
+	}
+
+	&.active {
+		height: auto;
+		padding-top: 0;
+
+		#map {
+			display: block;
+		}
+	}
+}
+
+.app-footer {
+	padding-bottom: 20px;
+	text-align: center;
+	font-size: 15px;
+	color: lighten($grey, 30%);
+
+	a {
+		color: lighten($grey, 30%);
+
+		&:hover,
+		&:focus {
+			color: $grey;
+		}
+	}
+
+	i {
+    position: relative;
+    top: 2px;
+    font-size: 24px;
+	}
+}
