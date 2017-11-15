@@ -4,7 +4,7 @@
 		var csv_data = [];
 
 	  $('#upload_file').on('change', function () {
-	  	validateFile(this.files[0]);
+	  	validateFile(this.files);
 	  });
 
 		// if(typeof(zip_key) != 'undefined' && zip_key !== null) {
@@ -19,21 +19,26 @@
 		/*
 		 * VALIDATE THE FILE TYPE AND SIZE
 		 */
-		function validateFile(file) {
-			if(file.type == 'text/csv') { // File type must be .CSV
-	  		if(file.size <= 26214400) { // File size must be less than 25MB
-	  			$('.app-alert-bar').hide();
-	  			parseCSV(file).then(function(response){
-	  				csv_data = response;
-	  				buildSelectBox(Object.keys(response[0]));
-	  			}).catch(function(){
-	  				triggerAlertBar('There was an issue loading the file.');
-	  			});
-	  		} else {
-	  			triggerAlertBar('Sorry, files must be less than 25MB.');
-	  		}
-	  	} else {
-	  		triggerAlertBar('Sorry, only CSV files are allowed.');
+		function validateFile(files) {
+			if(files.length == 1) { // Only one file uploaded at a time
+				var file = files[0];
+				if(file.type == 'text/csv') { // File type must be .CSV
+		  		if(file.size <= 26214400) { // File size must be less than 25MB
+		  			$('.app-alert-bar').hide();
+		  			parseCSV(file).then(function(response){
+		  				csv_data = response;
+		  				buildSelectBox(Object.keys(response[0]));
+		  			}).catch(function(){
+		  				triggerAlertBar('There was an issue loading the file.');
+		  			});
+		  		} else {
+		  			triggerAlertBar('Sorry, files must be less than 25MB.');
+		  		}
+		  	} else {
+		  		triggerAlertBar('Sorry, only CSV files are allowed.');
+		  	}
+		  } else {
+	  		triggerAlertBar('Sorry, only one file can be uploaded at a time.');
 	  	}
 		}
 
@@ -144,7 +149,7 @@
 		  })
 		  .on('drop', function(e) {
 		    droppedFiles = e.originalEvent.dataTransfer.files;
-		    validateFile(droppedFiles[0]);
+		    validateFile(droppedFiles);
 		  });
 		}
 
