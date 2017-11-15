@@ -48,6 +48,7 @@
   	<footer class="app-footer">
   		<div class="wrap">
 				<p>Created with <i>&#9829;</i> by <a href="https://mlitzinger.com" target="_blank">Matt Litzinger</a>.</p>
+        <p><a href="https://github.com/mattlitzinger/GeoPlotter" target="_blank">View on GitHub</a></p>
 			</div>
   	</footer><!-- .app-footer -->
 
@@ -57,11 +58,14 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlFG419Vy83pr6a6NA1GmXiJZI3fNLm3E&callback=initMap"></script>
     <script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js"></script>
 
-  	<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+  	<!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-11313037-16"></script>
     <script>
-      window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-      ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-11313037-16');
     </script>
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
   </body>
 </html>
