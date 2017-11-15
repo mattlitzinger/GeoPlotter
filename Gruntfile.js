@@ -30,7 +30,10 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
-          'js/page_scripts.js'
+          'js/jquery.js',
+          'js/page_scripts.js',
+          'js/google_maps.js',
+          'js/markerclusterer.js'
         ],
         dest: 'js/global.js',
       }
