@@ -55,10 +55,11 @@ p {
 
 a {
 	word-wrap: break-word; 
+	color: $orange;
 	
 	&:hover,
 	&:focus {
-		
+		color: darken($orange, 6.5%);
 	}
 }
 

@@ -41,6 +41,7 @@
 				<div class="map-container">
           <div id="map"></div>
         </div>
+        <p><a id="resetMap" onclick="clearMarkers();" href="javascript:void(0);">Reset Map</a></p>
 			</div>
   	</div><!-- .app-content -->
 
@@ -51,10 +52,10 @@
   	</footer><!-- .app-footer -->
 
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlFG419Vy83pr6a6NA1GmXiJZI3fNLm3E"></script>
-    <script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js"></script>
 		<script src="js/page_scripts.js"></script>
     <script src="js/google_maps.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlFG419Vy83pr6a6NA1GmXiJZI3fNLm3E&callback=initMap"></script>
+    <script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js"></script>
 
   	<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
     <script>

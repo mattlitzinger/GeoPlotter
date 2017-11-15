@@ -5,7 +5,6 @@
 
 	  $('#upload_file').on('change', function () {
 	  	validateFile(this.files[0]);
-	  	$('.map-container').removeClass('active');
 	  });
 
 		// if(typeof(zip_key) != 'undefined' && zip_key !== null) {
@@ -15,7 +14,6 @@
 		$('#zip_code_filter').on('change', function() {
 			// console.log($(this).val());
 			buildZipCodeMap( unescape( $(this).val() ) );
-			$('.map-container').addClass('active');
 		});
 
 		/*
@@ -91,6 +89,8 @@
 		 * BUILD SELECT BOX FOR ZIP CODES
 		 */
 		function buildSelectBox(keys) {
+			clearMarkers();
+
 			var html = '<option value="" selected>--</option>';
 			for(i = 0; i < keys.length; i++) {
 				html = html + '<option value="' + escape(keys[i]) + '">' + keys[i] + '</option>';
@@ -116,7 +116,7 @@
 			for(var i = csv_data.length - 1; i >= 0; i--) {
 				zip_codes.push(csv_data[i][array_key]);
 			}
-			initMap(zip_codes);
+			addMarkers(zip_codes);
 		}
 
 		/*
@@ -145,7 +145,6 @@
 		  .on('drop', function(e) {
 		    droppedFiles = e.originalEvent.dataTransfer.files;
 		    validateFile(droppedFiles[0]);
-		    $('.map-container').removeClass('active');
 		  });
 		}
 

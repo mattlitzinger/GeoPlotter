@@ -50,6 +50,8 @@
 
 .app-content {
 	padding: 48px 0;
+	text-align: center;
+	font-size: 15px;
 
 	@media screen and (max-width: 1000px) {
 		padding: 0 0 48px;
@@ -61,24 +63,16 @@
 }
 
 .map-container {
-	height: 0;
-	padding-top: 56.25%;
+	position: relative;
+	height: auto;
+	padding-top: 0;
+	margin-bottom: 20px;
 	background-color: lighten($grey, 55%);
 
 	#map {
-		display: none;
 	  height: 0;
 	  width: 100%;
 	  padding-top: 56.25%;
-	}
-
-	&.active {
-		height: auto;
-		padding-top: 0;
-
-		#map {
-			display: block;
-		}
 	}
 }
 
