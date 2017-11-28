@@ -23,11 +23,14 @@ function addMarkers(zip_codes) {
 
   for (var i = 0; i < zip_codes.length; i++) {
     if( zip_codes[i] != '' ) {
-      $.ajax({
-        async: false,
-        type: 'GET',
-        url: 'https://maps.googleapis.com/maps/api/geocode/json?address='+zip_codes[i]+'&key=AIzaSyAlFG419Vy83pr6a6NA1GmXiJZI3fNLm3E',
-        success: function(data) {
+      var request = new XMLHttpRequest();
+      var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+zip_codes[i]+'&key=AIzaSyAlFG419Vy83pr6a6NA1GmXiJZI3fNLm3E';
+      request.open('GET', url, false);
+
+      request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+          var data = JSON.parse(request.responseText);
+
           if(data.results[0] != undefined) {
             var location = { lat: data.results[0].geometry.location.lat, lng: data.results[0].geometry.location.lng };
 
@@ -48,11 +51,12 @@ function addMarkers(zip_codes) {
               infoWindow.open(map, marker);
             });
           }
-        },
-        error: function (response) {
-          console.log(response);
-        }  
-      });
+        } else {
+          console.log('Error', request.statusText);
+        }
+      };
+
+      request.send();
     }
   } 
 
