@@ -61,6 +61,10 @@ function addMarkers(zip_codes) {
   } 
 
   markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'});
+
+  var loading_overlay = document.querySelector('.loading-overlay');
+  loading_overlay.style.display = 'none';
+  console.log('Map data loaded.');
 }
 
 function clearMarkers() {

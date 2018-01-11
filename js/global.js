@@ -103,6 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		zip_code_filter.innerHTML = html;
 		filter_options.style.display = 'block';
+
+		var loading_overlay = document.querySelector('.loading-overlay');
+		loading_overlay.style.display = 'block';
+		console.log('Loading map data...');
 	}
 
 	/*
@@ -120,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	function buildZipCodeMap(key) {
 		var zip_codes = [];
 		var array_key = key;
+
 		for(var i = csv_data.length - 1; i >= 0; i--) {
 			zip_codes.push(csv_data[i][array_key]);
 		}
@@ -247,6 +252,10 @@ function addMarkers(zip_codes) {
   } 
 
   markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'});
+
+  var loading_overlay = document.querySelector('.loading-overlay');
+  loading_overlay.style.display = 'none';
+  console.log('Map data loaded.');
 }
 
 function clearMarkers() {
