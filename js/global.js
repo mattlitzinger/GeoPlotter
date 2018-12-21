@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+	/*
+	 * ESTABLISH PROJECT VARIABLES
+	 */
 	var csv_data = [];
 
 	var upload_field = document.getElementById('upload_file');
@@ -9,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	var zip_code_field = document.getElementById('zip_code_filter');
 	zip_code_field.addEventListener('change', function () {
-		// console.log($(this).val());
 		buildZipCodeMap( unescape( $(this).val() ) );
+		buildSubscriberList();
 	});
 
 	/*
@@ -49,13 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		return new Promise(function(resolve, reject) {
 	  	reader.onload = function() {
-	  		// Split the result to an array of lines
-	  		var lines = this.result.split('\n');
 
-		    // Split the lines themselves by the specified delimiter, such as a comma
-		    var result = lines.map(function(line) {
-		    	return line.split(',');
-		    });
+		    var result = CSVToArray( this.result, ',' );
+
+		    console.log(result);
 
 		    // Remove empty values from array
 		    var clean_result = [];
@@ -67,11 +67,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		    result = clean_result;
 
 		    // Create object with inline headers 
-		    var keys = result[0];
+		    var keys = result[0]; 
 		    for(i = 1; i < result.length; i++) { // offset by 1 for header row
 		    	var data = result[i];
 		    	var obj = {};
-		    	for(j = 0; j < data.length; j++) {
+		    	for(j = 0; j < (data.length); j++) {
 			    	obj[keys[j].trim()] = data[j].trim();
 			    }
 		    	result_object.push(obj);
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		var loading_overlay = document.querySelector('.loading-overlay');
 		loading_overlay.style.display = 'block';
-		console.log('Loading map data...');
+		console.log('Waiting on user input...');
 	}
 
 	/*
@@ -124,6 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	function buildZipCodeMap(key) {
 		var zip_codes = [];
 		var array_key = key;
+
+		console.log('Assembling location data...');
 
 		for(var i = csv_data.length - 1; i >= 0; i--) {
 			zip_codes.push(csv_data[i][array_key]);
@@ -187,6 +189,72 @@ document.addEventListener('DOMContentLoaded', function() {
 		  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	}
 
+	/*
+	 * Parse a delimited string into an array of arrays
+	 */
+  function CSVToArray( strData, strDelimiter ){
+    // Check to see if the delimiter is defined. If not, then default to comma.
+    strDelimiter = (strDelimiter || ",");
+
+    // Create a regular expression to parse the CSV values.
+    var objPattern = new RegExp((
+      // Delimiters.
+      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+
+      // Quoted fields.
+      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+
+      // Standard fields.
+      "([^\"\\" + strDelimiter + "\\r\\n]*))"
+    ), "gi");
+
+    // Create an array to hold our data. Give the array a default empty first row.
+    var arrData = [[]];
+
+    // Create an array to hold our individual pattern matching groups.
+    var arrMatches = null;
+
+    // Keep looping over the regular expression matches until we can no longer find a match.
+    while (arrMatches = objPattern.exec( strData )){
+
+      // Get the delimiter that was found.
+      var strMatchedDelimiter = arrMatches[ 1 ];
+
+      // Check to see if the given delimiter has a length
+      // (is not the start of string) and if it matches
+      // field delimiter. If id does not, then we know
+      // that this delimiter is a row delimiter.
+      if (
+        strMatchedDelimiter.length &&
+        strMatchedDelimiter !== strDelimiter
+        ){
+
+        // Since we have reached a new row of data,
+        // add an empty row to our data array.
+        arrData.push( [] );
+      }
+
+      var strMatchedValue;
+
+      // Now that we have our delimiter out of the way, 
+      // let's check to see which kind of value we 
+      // captured (quoted or unquoted).
+      if (arrMatches[ 2 ]){
+        // We found a quoted value. When we capture this value, unescape any double quotes.
+        strMatchedValue = arrMatches[ 2 ].replace( new RegExp( "\"\"", "g" ), "\"" );
+      } else {
+        // We found a non-quoted value.
+        strMatchedValue = arrMatches[ 3 ];
+      }
+
+      // Now that we have our value string, let's add it to the data array.
+      arrData[ arrData.length - 1 ].push( strMatchedValue );
+    }
+
+    // Return the parsed data.
+    return( arrData );
+  }
+
 });
 
 var map;
@@ -211,6 +279,8 @@ function initMap() {
 
 function addMarkers(zip_codes) {
   infoWindow = new google.maps.InfoWindow();
+
+  console.log('Loading map data...');
 
   for (var i = 0; i < zip_codes.length; i++) {
     if( zip_codes[i] != '' ) {

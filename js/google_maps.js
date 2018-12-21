@@ -21,6 +21,8 @@ function initMap() {
 function addMarkers(zip_codes) {
   infoWindow = new google.maps.InfoWindow();
 
+  console.log('Loading map data...');
+
   for (var i = 0; i < zip_codes.length; i++) {
     if( zip_codes[i] != '' ) {
       var request = new XMLHttpRequest();

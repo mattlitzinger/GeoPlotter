@@ -11,5 +11,8 @@
     "grunt-contrib-watch": "^0.6.1"
   },
   "author": "Matt Litzinger",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "npm": "^6.5.0"
+  }
 }
