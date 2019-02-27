@@ -92,7 +92,7 @@ function addMarkers(zip_codes, callback) {
       callback();
 
     } else {
-      console.error(xhr.responseText.results.response);
+      console.error(xhr.responseText.results);
     }
   }
 

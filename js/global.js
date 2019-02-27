@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-
+    
 	/*
 	 * ESTABLISH PROJECT VARIABLES
 	 */
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	var zip_code_field = document.getElementById('zip_code_filter');
 	zip_code_field.addEventListener('change', function () {
-		buildZipCodeMap( unescape( $(this).val() ) );
+		buildZipCodeMap( unescape( this.value ) );
 		// buildSubscriberList();
 	});
 
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		    var result = CSVToArray( this.result, ',' );
 
-		    console.log(result);
+		    // console.log(result);
 
 		    // Remove empty values from array
 		    var clean_result = [];
@@ -356,7 +356,7 @@ function addMarkers(zip_codes, callback) {
       callback();
 
     } else {
-      console.error(xhr.responseText);
+      console.error(xhr.responseText.results);
     }
   }
 
