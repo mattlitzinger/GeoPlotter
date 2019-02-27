@@ -18,62 +18,93 @@ function initMap() {
   });
 }
 
-function addMarkers(zip_codes) {
-  infoWindow = new google.maps.InfoWindow();
+function addMarkers(zip_codes, callback) {
+  clearMarkers();
 
   console.log('Loading map data...');
 
-  for (var i = 0; i < zip_codes.length; i++) {
-    if( zip_codes[i] != '' ) {
-      var request = new XMLHttpRequest();
-      var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+zip_codes[i]+'&key=AIzaSyAlFG419Vy83pr6a6NA1GmXiJZI3fNLm3E';
-      request.open('GET', url, false);
+  infoWindow = new google.maps.InfoWindow();
 
-      request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-          var data = JSON.parse(request.responseText);
+  // console.log(JSON.stringify(zip_codes));
 
-          if(data.results[0] != undefined) {
-            var location = { lat: data.results[0].geometry.location.lat, lng: data.results[0].geometry.location.lng };
+  // var locations = [
+  //   {"lat":37.42509,"lng":-122.1675},
+  //   {"lat":39.848539,"lng":-74.953498},
+  //   {"lat":38.018054,"lng":-76.68611},
+  //   {"lat":39.582222,"lng":-104.955576},
+  //   {"lat":40.119897,"lng":-82.377784},
+  //   {"lat":34.10084,"lng":-117.76784},
+  //   {"lat":29.800187,"lng":-95.328888},
+  //   {"lat":42.500187,"lng":-71.575864},
+  //   {"lat":36.169273,"lng":-115.282751},
+  //   {"lat":36.169273,"lng":-115.282751},
+  //   {"lat":32.562179,"lng":-86.099371},
+  //   {"lat":33.615485,"lng":-111.952235},
+  //   {"lat":36.862209,"lng":-119.760793},
+  //   {"lat":34.660866,"lng":-86.560608},
+  //   {"lat":35.11125,"lng":-81.22646},
+  //   {"lat":45.391278,"lng":-121.143152}
+  // ];
 
-            locations.push(location);
+  var xhr = new XMLHttpRequest();
+  var url = 'https://api.geocod.io/v1.3/geocode?api_key=' + config.GEOCODIO_KEY;
 
-            var marker = new google.maps.Marker({
-              position: location,
-            });
-            markers.push(marker);
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-type', 'application/json');
 
-            google.maps.event.addListener(marker, 'click', function() {
+  xhr.onreadystatechange = function() {
+    if( xhr.readyState === 4 && xhr.status == 200 ) {
+      var data = JSON.parse(xhr.responseText);
+      console.log(data);
+
+      for (var i = 0; i < data.results.length; i++) {
+        if(data.results[i].response.results.length > 0 && data.results[i].response.results != undefined) {
+          var location = { lat: data.results[i].response.results[0].location.lat, lng: data.results[i].response.results[0].location.lng };
+
+          locations.push(location);
+
+          var marker = new google.maps.Marker({
+            position: location,
+          });
+
+          markers.push(marker);
+
+          var infoWindowContent = '<div style="color:#333;">' + 
+              '<strong>' + data.results[i].response.results[0].formatted_address + '</strong><br>' + 
+              'lat: ' + data.results[i].response.results[0].location.lat + '<br>' + 
+              'lng: ' + data.results[i].response.results[0].location.lng + '<br>' + 
+            '</div>';
+
+          google.maps.event.addListener(marker, 'click', (function(marker, infoWindowContent, infoWindow){ 
+            return function() {
               infoWindow.close();
-              infoWindow.setContent('<div style="color:#333;">' + 
-                '<strong>' + data.results[0].formatted_address + '</strong><br>' + 
-                'lat: ' + data.results[0].geometry.location.lat + '<br>' + 
-                'lng: ' + data.results[0].geometry.location.lng + '<br>' + 
-                '</div>');
+              infoWindow.setContent(infoWindowContent);
               infoWindow.open(map, marker);
-            });
-          }
-        } else {
-          console.log('Error', request.statusText);
+            };
+          })(marker, infoWindowContent, infoWindow));
         }
-      };
+      }
 
-      request.send();
+      console.log(JSON.stringify(locations));
+
+      markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'});
+
+      callback();
+
+    } else {
+      console.error(xhr.responseText.results.response);
     }
-  } 
+  }
 
-  markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'});
-
-  var loading_overlay = document.querySelector('.loading-overlay');
-  loading_overlay.style.display = 'none';
-  console.log('Map data loaded.');
+  xhr.send(JSON.stringify(zip_codes));
 }
 
 function clearMarkers() {
-  if(markerCluster) {
+  if(markerCluster != undefined) {
     markerCluster.clearMarkers();
   }
   
+  locations = [];
   markers = [];
 
   document.getElementById('filter_options').style.display = 'none';

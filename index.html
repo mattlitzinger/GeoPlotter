@@ -12,8 +12,8 @@
   <body>
   	<header class="app-header">
   		<div class="wrap">
-  			<h1><span>Geo</span>Plotter</h1>
-  			<p>Visualize location data for your fans and subscribers. Upload a file to get started.</p>
+  			<!-- <h1><span>Geo</span>Plotter</h1> -->
+  			<!-- <p>Visualize location data for your fans and subscribers. Upload a file to get started.</p> -->
 				<form class="file-upload-form" method="POST" enctype="multipart/form-data">
 			    <input class="inputfile" type="file" name="upload_file" id="upload_file"><br>
 			    <label class="button" for="upload_file">Upload .CSV File</label>
@@ -54,8 +54,16 @@
   	</footer><!-- .app-footer -->
 
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-		<script src="js/global.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlFG419Vy83pr6a6NA1GmXiJZI3fNLm3E&callback=initMap"></script>
+		<script src="js/config.js"></script>
+    <script src="js/global.min.js"></script>
+    <script>
+      (function (d, t) {
+        var bh = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        bh.type = 'text/javascript';
+        bh.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.GOOGLE_MAPS_KEY + '&callback=initMap';
+        s.parentNode.insertBefore(bh, s);
+      })(document, 'script');
+    </script>
 
   	<!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-11313037-16"></script>

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-
+    
 	/*
 	 * ESTABLISH PROJECT VARIABLES
 	 */
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var zip_code_field = document.getElementById('zip_code_filter');
 	zip_code_field.addEventListener('change', function () {
 		buildZipCodeMap( unescape( $(this).val() ) );
-		buildSubscriberList();
+		// buildSubscriberList();
 	});
 
 	/*
@@ -130,7 +130,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		for(var i = csv_data.length - 1; i >= 0; i--) {
 			zip_codes.push(csv_data[i][array_key]);
 		}
-		addMarkers(zip_codes);
+		
+		addMarkers(zip_codes, function(){
+			var loading_overlay = document.querySelector('.loading-overlay');
+		  loading_overlay.style.display = 'none';
+		  console.log('Map data loaded.');
+		});
 	}
 
 	/*
